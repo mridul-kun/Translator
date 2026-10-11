@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <script>try { var t = localStorage.getItem("kotoba-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t } catch (e) { }</script>
+    <title>Kotoba – Japanese ⇄ English Translator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="appbar" id="top">
+        <span class="logo-ja" lang="ja">言葉</span>
+        <span class="logo">Kotoba</span>
+        <button class="theme-toggle" id="themeToggle" type="button" data-mode="dark" title="Switch theme"
+            aria-label="Switch theme">
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                    d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z" />
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                    d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 0 0 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z" />
+            </svg>
+        </button>
+    </header>
+
+    <main>
+        <nav class="pills" aria-label="Modes">
+            <button class="pill active" type="button" data-mode="text" aria-pressed="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                        d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z" />
+                </svg>
+                Text
+            </button>
+            <button class="pill" type="button" data-mode="image" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                        d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                </svg>
+                Images
+            </button>
+            <button class="pill" type="button" data-mode="document" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                        d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z" />
+                </svg>
+                Documents
+            </button>
+            <button class="pill" id="speakPill" type="button" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                        d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z" />
+                </svg>
+                Speak
+            </button>
+        </nav>
+
+        <section class="upload" id="uploadPanel" hidden>
+            <label class="drop" id="drop" for="fileInput">
+                <span class="drop-left">
+                    <img id="preview" alt="Selected image preview" hidden>
+                    <svg class="cloud" viewBox="0 0 24 24" aria-hidden="true">
+                        <path class="cloud-shape"
+                            d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
+                        <path class="cloud-arrow" d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"
+                            transform="translate(6.9 7.4) scale(.42)" />
+                    </svg>
+                    <span class="drop-title" id="dropTitle">Drag and drop</span>
+                </span>
+                <span class="drop-right">
+                    <span class="drop-or">Or choose a file</span>
+                    <span class="browse">Browse your files</span>
+                    <span class="drop-hint" id="dropHint"></span>
+                </span>
+            </label>
+            <input type="file" id="fileInput" hidden>
+        </section>
+
+        <section class="translator" id="translator" aria-label="Translator">
+            <div class="lang from"><strong class="lang-tab" id="fromLabel">English</strong></div>
+
+            <button class="swap" id="swap" title="Swap languages" aria-label="Swap languages">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                    <path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z" />
+                </svg>
+            </button>
+
+            <div class="lang to"><strong class="lang-tab" id="toLabel">Japanese</strong></div>
+
+            <div class="panel in">
+                <textarea id="input" maxlength="500" placeholder="Enter text" aria-labelledby="fromLabel"></textarea>
+                <button class="icon clear" id="clear" title="Clear text" aria-label="Clear text">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    </svg>
+                </button>
+                <button class="kana-line" id="kanaLine" type="button" hidden></button>
+                <div class="foot">
+                    <button class="icon" id="speakFrom" title="Listen" aria-label="Listen to input">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                        </svg>
+                    </button>
+                    <span class="foot-right">
+                        <span class="count" id="count">0 / 500</span>
+                        <span class="model-wrap">
+                            <button class="model-btn" id="modelBtn" type="button" aria-haspopup="true"
+                                aria-expanded="false" title="Choose translation model">
+                                <span id="modelLabel">Normal</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M7 10l5 5 5-5z" />
+                                </svg>
+                            </button>
+                            <div class="menu" id="modelMenu" role="group" aria-label="Translation model" hidden>
+                                <p class="menu-title">Choose translation model</p>
+                                <button class="menu-item" type="button" role="menuitemradio" data-model="advanced"
+                                    aria-checked="false">
+                                    <span class="check"></span>
+                                    <span><strong>Advanced</strong><small id="advDesc">Improved accuracy, built with
+                                            Claude</small></span>
+                                </button>
+                                <button class="menu-item" type="button" role="menuitemradio" data-model="classic"
+                                    aria-checked="true">
+                                    <span class="check"></span>
+                                    <span><strong>Normal</strong><small>Fast, standard translation</small></span>
+                                </button>
+                                <p class="menu-note">Advanced is available for English and Japanese text.</p>
+                            </div>
+                        </span>
+                        <button class="icon" id="kbBtn" type="button" aria-pressed="false" title="On-screen keyboard"
+                            aria-label="On-screen keyboard">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                                <path
+                                    d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z" />
+                            </svg>
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="panel out">
+                <div class="output" id="output" lang="ja" aria-live="polite">Translation</div>
+                <p class="roman" id="roman" hidden></p>
+                <p class="gloss" id="gloss" hidden>
+                    <strong id="glossPos"></strong>
+                    <span class="gloss-chips" id="glossChips"></span>
+                    <a id="glossLink" href="https://jisho.org/" target="_blank" rel="noopener noreferrer">See
+                        dictionary</a>
+                </p>
+                <p class="status" id="status" role="status"></p>
+                <div class="foot">
+                    <button class="icon" id="speakTo" title="Listen" aria-label="Listen to translation">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                        </svg>
+                    </button>
+                    <span class="icons">
+                        <button class="icon" id="copy" title="Copy translation" aria-label="Copy translation">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                                <path
+                                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+                            </svg>
+                        </button>
+                        <button class="icon" id="save" title="Save to word bank" aria-label="Save to word bank">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                                <path
+                                    d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z" />
+                            </svg>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <section class="imgview" id="imgView" hidden aria-label="Image translation">
+                <div class="imgbar">
+                    <label class="switch">
+                        <input type="checkbox" id="showOriginal" checked>
+                        <span class="slider" aria-hidden="true"></span>
+                        Show original
+                    </label>
+                    <span class="imgtools">
+                        <button class="text-btn" id="imgCopy" type="button">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+                            </svg>
+                            <span>Copy text</span>
+                        </button>
+                        <button class="text-btn" id="imgDownload" type="button">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                            </svg>
+                            <span>Download translation</span>
+                        </button>
+                        <button class="icon" id="imgClose" type="button" title="Close"
+                            aria-label="Close image translation">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                                <path
+                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                            </svg>
+                        </button>
+                    </span>
+                </div>
+                <div class="imgcols" id="imgCols">
+                    <div class="imgcol" id="origCol"><img id="origImg" alt="Original image"></div>
+                    <div class="imgcol"><canvas id="outCanvas" role="img" aria-label="Translated image"></canvas></div>
+                </div>
+            </section>
+
+            <section class="docview" id="docView" hidden aria-label="Document translation">
+                <div class="docresult">
+                    <div class="filecard">
+                        <svg class="fileicon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z" />
+                        </svg>
+                        <span class="filemeta"><strong id="docName"></strong><span id="docSize"></span></span>
+                        <button class="icon" id="docClose" type="button" title="Close"
+                            aria-label="Close document translation">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                                <path
+                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="docactions">
+                        <button class="btn-outline" id="docDownload" type="button">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                            </svg>
+                            Download translation
+                        </button>
+                        <button class="btn-solid" id="docOpen" type="button">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
+                            </svg>
+                            Open translation
+                        </button>
+                    </div>
+                    <button class="text-btn" id="docAlt" type="button" hidden></button>
+                    <p class="docnote" id="docNote" hidden></p>
+                </div>
+            </section>
+
+            <section class="more" id="more" hidden aria-label="More translations">
+                <div class="more-head">
+                    <h2>More translations</h2>
+                    <button class="text-btn" id="expandAll" type="button">Expand all</button>
+                </div>
+                <ul class="more-list" id="moreList"></ul>
+            </section>
+        </section>
+
+        <section class="osk" id="osk" hidden aria-label="On-screen keyboard">
+            <div class="osk-bar">
+                <span id="oskTitle">English</span>
+                <span class="osk-tools">
+                    <button class="osk-tool" id="oskKana" type="button" hidden>カタカナ</button>
+                    <button class="osk-close" id="oskClose" type="button" title="Close keyboard"
+                        aria-label="Close keyboard">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                        </svg>
+                    </button>
+                </span>
+            </div>
+            <div class="osk-keys" id="oskKeys"></div>
+        </section>
+
+        <section class="shortcuts" aria-label="History and saved translations">
+            <button class="circle-btn" id="historyBtn" type="button" aria-expanded="false" aria-controls="drawer">
+                <span class="circle"><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" />
+                    </svg></span>
+                <span>History</span>
+            </button>
+            <button class="circle-btn" id="savedBtn" type="button" aria-expanded="false" aria-controls="drawer">
+                <span class="circle"><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z" />
+                    </svg></span>
+                <span>Saved</span>
+            </button>
+        </section>
+
+        <section class="drawer" id="drawer" hidden>
+            <div class="drawer-head">
+                <h2 id="drawerTitle">History</h2>
+                <button class="text-btn" id="drawerClear" type="button">Clear history</button>
+            </div>
+            <ul class="list" id="drawerList"></ul>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html> 

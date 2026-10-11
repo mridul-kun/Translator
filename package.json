@@ -1,0 +1,67 @@
+{
+    "name": "kotoba",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Kotoba: English <-> Japanese translator (text, images, documents)",
+    "scripts": {
+        "build:client": "tsc -p tsconfig.client.json",
+        "build:server": "tsc -p tsconfig.server.json",
+        "build": "npm run build:server && npm run build:client",
+        "start": "node dist/server.js",
+        "dev": "npm run build:client && tsx watch src/server.ts",
+        "build:electron": "tsc -p tsconfig.electron.json",
+        "build:all": "npm run build && npm run build:electron",
+        "electron": "npm run build:all && electron .",
+        "dist": "npm run build:all && electron-builder --win",
+        "dist:dir": "npm run build:all && electron-builder --win --dir"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "express": "^4.21.0",
+        "express-rate-limit": "^7.4.0",
+        "kuromoji": "^0.1.2"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/node": "^20.14.0",
+        "electron": "^44.5.1",
+        "electron-builder": "^26.15.3",
+        "tsx": "^4.19.0",
+        "typescript": "^5.5.0"
+    },
+    "main": "dist-electron/main.js",
+    "author": "Your Name",
+    "build": {
+        "appId": "com.kotoba.translator",
+        "productName": "Kotoba",
+        "directories": {
+            "output": "release",
+            "buildResources": "build"
+        },
+        "files": [
+            "dist/**/*",
+            "dist-electron/**/*",
+            "public/**/*",
+            "build/icon.png",
+            "package.json"
+        ],
+        "win": {
+            "icon": "build/icon.ico",
+            "target": [
+                "nsis",
+                "portable"
+            ]
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "shortcutName": "Kotoba",
+            "artifactName": "Kotoba-Setup-${version}.${ext}"
+        },
+        "portable": {
+            "artifactName": "Kotoba-Portable-${version}.${ext}"
+        }
+    }
+}
